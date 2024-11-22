@@ -1,0 +1,13 @@
+database erc721_owners;
+
+table owners {
+    address text notnull,
+    token_id int primary
+}
+
+procedure upsert_owner ($address text, $token_id int) public owner {
+    INSERT INTO owners (address, token_id) 
+    VALUES ($address, $token_id)
+    ON CONFLICT (token_id)
+    DO UPDATE SET address = $address;
+}
