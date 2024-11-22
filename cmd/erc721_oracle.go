@@ -4,10 +4,8 @@ import (
 	"context"
 	_ "embed"
 	"encoding/hex"
-	"strings"
 
 	ethOracle "github.com/brennanjl/kwil-extension-tools/evm_oracle"
-	"github.com/ethereum/go-ethereum/accounts/abi"
 	ethTypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/kwilteam/kwil-db/common"
@@ -17,21 +15,12 @@ import (
 var (
 	contractAddress     = "0x25ed58c027921E14D86380eA2646E3a1B5C55A8b" // address of the ERC-721 contract
 	contractStartHeight = 18700000  
-	//go:embed dev_dao.json
-	abiJSON []byte
 	// stakingABI is the abi for the Credit event
-	transferABI            abi.ABI
 	transferEventSignature = "Transfer(address,address,uint256)"
 	transferEventTopic     = crypto.Keccak256Hash([]byte(transferEventSignature))
 )
 
 func init() {
-	var err error
-	transferABI, err = abi.JSON(strings.NewReader(string(abiJSON)))
-	if err != nil {
-		panic(err)
-	}
-
 	ethOracle.RegisterEthListener(ethOracle.EthListener{
 		ContractAddresses: []string{contractAddress},
 		EventSignatures:   []string{transferEventSignature},
