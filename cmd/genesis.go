@@ -33,11 +33,11 @@ func init() {
 			Ctx: ctx,
 			BlockContext: &common.BlockContext{
 				ChainContext: chain,
-				Height: 	 0,
+				Height:       0,
 			},
 			Signer: []byte(networkCaller),
 			Caller: networkCaller,
-			TxID: "genesis_schema",
+			TxID:   "genesis_schema",
 		}, app.DB, genesisSchema)
 	})
 	if err != nil {
@@ -46,17 +46,18 @@ func init() {
 }
 
 // // stake allows the oracle to register seen staking events
-func assignOwnership(ctx context.Context, app *common.App, owner string, tokenId int64, resolutionID *types.UUID) error {
+func assignOwnership(ctx context.Context, app *common.App, owner string, tokenId int64, resolutionID *types.UUID, kwilBlock *common.BlockContext) error {
 	txid := sha256.Sum256(resolutionID.Bytes())
 	_, err := app.Engine.Procedure(&common.TxContext{
-		Ctx: ctx,
-		Signer: []byte(networkCaller),
-		Caller: networkCaller,
-		TxID: hex.EncodeToString(txid[:]),
+		Ctx:          ctx,
+		BlockContext: kwilBlock,
+		Signer:       []byte(networkCaller),
+		Caller:       networkCaller,
+		TxID:         hex.EncodeToString(txid[:]),
 	}, app.DB, &common.ExecutionData{
-		Dataset: genesisSchema.DBID(),
-		Procedure: "assign_ownership",
-		Args: []any{owner, tokenId},
+		Dataset:   genesisSchema.DBID(),
+		Procedure: "upsert_owner",
+		Args:      []any{owner, tokenId},
 	})
 	return err
 }

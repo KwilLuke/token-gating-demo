@@ -46,6 +46,8 @@ github.com/brennanjl/kwil-extension-tools v0.0.0-20241122201100-e26ad6974bde h1:
 github.com/brennanjl/kwil-extension-tools v0.0.0-20241122201100-e26ad6974bde/go.mod h1:nC9BAPZ20A1g0ruY5OdA4OQpw/CYAaKeJF424dW2lMA=
 github.com/brennanjl/kwil-extension-tools v0.0.0-20241122203431-a83533343277 h1:MRRVd1v4BK/RKvx/2m0BJIuA2ewQohIUy1BYrPZ5K/s=
 github.com/brennanjl/kwil-extension-tools v0.0.0-20241122203431-a83533343277/go.mod h1:nC9BAPZ20A1g0ruY5OdA4OQpw/CYAaKeJF424dW2lMA=
+github.com/brennanjl/kwil-extension-tools v0.0.0-20241122222816-201da2e75dfe h1:Y06Q9FBOCzrPjWh8VXYHXdGBllsW/+qIk5tHQIeOnpU=
+github.com/brennanjl/kwil-extension-tools v0.0.0-20241122222816-201da2e75dfe/go.mod h1:nC9BAPZ20A1g0ruY5OdA4OQpw/CYAaKeJF424dW2lMA=
 github.com/btcsuite/btcd/btcec/v2 v2.3.4 h1:3EJjcN70HCu/mwqlUsGK8GcNVyLVxFDlWurTXGPFfiQ=
 github.com/btcsuite/btcd/btcec/v2 v2.3.4/go.mod h1:zYzJ8etWJQIv1Ogk7OzpWjowwOdXY1W/17j2MW85J04=
 github.com/btcsuite/btcd/btcutil v1.1.6 h1:zFL2+c3Lb9gEgqKNzowKUPQNb8jV7v5Oaodi/AYFd6c=

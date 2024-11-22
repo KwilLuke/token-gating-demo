@@ -3,7 +3,7 @@ module github.com/kwilluke/token-gating-demo
 go 1.23.1
 
 require (
-	github.com/brennanjl/kwil-extension-tools v0.0.0-20241122203431-a83533343277
+	github.com/brennanjl/kwil-extension-tools v0.0.0-20241122222816-201da2e75dfe
 	github.com/ethereum/go-ethereum v1.14.9
 	github.com/kwilteam/kwil-db v0.9.1
 	github.com/kwilteam/kwil-db/core v0.3.0
