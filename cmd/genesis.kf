@@ -11,3 +11,13 @@ procedure upsert_owner ($address text, $token_id int) public owner {
     ON CONFLICT (token_id)
     DO UPDATE SET address = $address;
 }
+
+procedure check_owner ($address text) public view returns (isOwner bool) {
+    $isOwner bool;
+
+    for $row in SELECT 1 FROM owners WHERE address = $address {
+        $isOwner := true;
+    }
+
+    return $isOwner;
+}

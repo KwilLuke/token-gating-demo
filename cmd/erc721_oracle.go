@@ -15,6 +15,8 @@ import (
 )
 
 var (
+	contractAddress     = "0x25ed58c027921E14D86380eA2646E3a1B5C55A8b" // address of the ERC-721 contract
+	contractStartHeight = 13153967  
 	//go:embed dev_dao.json
 	abiJSON []byte
 	// stakingABI is the abi for the Credit event
@@ -31,9 +33,9 @@ func init() {
 	}
 
 	ethOracle.RegisterEthListener(ethOracle.EthListener{
-		ContractAddresses: []string{"0x25ed58c027921E14D86380eA2646E3a1B5C55A8b"},
+		ContractAddresses: []string{contractAddress},
 		EventSignatures:   []string{transferEventSignature},
-		StartHeight:       13153967, // height the nft was deployed
+		StartHeight:       uint64(contractStartHeight), // height the nft was deployed
 		ExtensionName:     "erc721_oracle",
 		// extensions.erc721_oracle.block_sync_chunk_size
 		ConfigName:            "erc721_oracle",

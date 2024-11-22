@@ -1,0 +1,35 @@
+database hello_erc721;
+
+table messages {
+    id uuid primary,
+    message text notnull
+}
+
+foreign procedure check_user($address text) returns (isOwner bool)
+
+procedure is_owner() private view {
+    // foreign call
+    $isOwner := check_user['x88565fd74313f7deded69a5557c5a46d62b82d40db9dd98f4a3d2e13', 'check_user'](@caller);
+
+    // throw error if not owner
+    if !$isOwner {
+        error('Caller is not an NFT owner!');
+    }
+}
+
+procedure add_message($message text) public {
+    // check if caller is owner
+    is_owner();
+
+    // insert message
+    INSERT INTO messages (id, message)
+    VALUES (uuid_generate_v5('c5be630e-d1f7-435b-b761-a9c61b280616'::uuid, @txid), $message);
+}
+
+procedure get_messages() public view returns table(message text) {
+    // check if caller is owner
+    is_owner();
+
+    // return messages
+    return SELECT message FROM messages;
+}
