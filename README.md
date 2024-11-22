@@ -24,7 +24,7 @@ var (
 2. Build the binary with the oracle.
 
 ```bash
-.build/kwild-erc721 node -r .build/demo-node
+go build -o .build/kwild-erc721 ./cmd
 ```
 
 This will create a binary called `kwil-erc721` in the `.build` directory.
@@ -39,7 +39,7 @@ This will create a directory called `node_config` in the `.build` directory.
 
 4. Add an Ethereum RPC in `.build/node_config/config.toml`.
 
-The config must be added to the `[app.extensions]` section.
+The config must be added to the `[app.extensions]` section. Use a websocket address.
 
 ```toml
 
@@ -47,7 +47,7 @@ The config must be added to the `[app.extensions]` section.
 
 [app.extensions.erc721_oracle]
 
-rpc_url = "https://mainnet.infura.io/v3/your_infura_key"
+rpc_url = "wss://mainnet.infura.io/ws/v3/your_api_key"
 ```
 
 5. Start docker following the standard node [start instructions](https://docs.kwil.com/docs/node/quickstart#start).

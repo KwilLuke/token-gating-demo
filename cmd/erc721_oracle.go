@@ -16,7 +16,7 @@ import (
 
 var (
 	contractAddress     = "0x25ed58c027921E14D86380eA2646E3a1B5C55A8b" // address of the ERC-721 contract
-	contractStartHeight = 13153967  
+	contractStartHeight = 18700000  
 	//go:embed dev_dao.json
 	abiJSON []byte
 	// stakingABI is the abi for the Credit event
