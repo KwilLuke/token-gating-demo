@@ -3,13 +3,11 @@ package main
 import (
 	"context"
 	_ "embed"
-	"fmt"
-	"math/big"
+	"encoding/hex"
 	"strings"
 
 	ethOracle "github.com/brennanjl/kwil-extension-tools/evm_oracle"
 	"github.com/ethereum/go-ethereum/accounts/abi"
-	ethcommon "github.com/ethereum/go-ethereum/common"
 	ethTypes "github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/kwilteam/kwil-db/common"
@@ -40,48 +38,39 @@ func init() {
 		// extensions.erc721_oracle.block_sync_chunk_size
 		ConfigName:            "erc721_oracle",
 		RequiredConfirmations: 3,
-		Resolve: func(ctx context.Context, app *common.App, log ethTypes.Log) error {
+		Resolve: func(ctx context.Context, app *common.App, log ethTypes.Log, kwilBlock *common.BlockContext) error {
 			if len(log.Topics) == 0 {
 				app.Service.Logger.Error("no event signature")
 				return nil
 			}
 
-			var data []any
-			switch log.Topics[0] {
-			case transferEventTopic:
-				data, err = transferABI.Unpack("Transfer", log.Data)
-				fmt.Println("The data is: ", log.Data)
-				if err != nil {
-					app.Service.Logger.Error("failed to unpack transfer event", "error", err)
-					return nil
-				}
-			default:
-				app.Service.Logger.Error("unknown event signature", "signature", log.Topics[0].Hex())
+			if log.Topics[0] != transferEventTopic {
+				app.Service.Logger.Error("unknown event signature, expected Transfer", "signature", log.Topics[0].Hex())
 				return nil
 			}
+
+			// Per the erc721 standard, all 3 topics are indexed (https://eips.ethereum.org/EIPS/eip-721)
+			// Therefore, we need to decode the data from the topics, rather than the event log data.
+			// See docs here: https://goethereumbook.org/event-read/#topics
 
 			// go-ethereum decodes uint256 as *big.Int
 			// check that the data includes the from, to, and tokenId
-			if len(data) != 3 {
-				app.Service.Logger.Error("invalid data length", "length", len(data))
+			if len(log.Topics) != 4 {
+				app.Service.Logger.Error("expected Transfer event to have 4 topics", "topics", len(log.Topics))
 				return nil
 			}
 
-			// validate that the to address is bytes
-			to, ok := data[1].(ethcommon.Address)
-			if !ok {
-				app.Service.Logger.Error("invalid to address", "to", data[1])
-				return nil
-			}
+			// the first topic is the event signature
+			// The next 3 topics are indexed, so we can decode them directly
+			// first indexed is the from address
+			// second indexed is the to address
+			// third indexed is the tokenId
 
-			// validate that the tokenId is a *big.Int
-			tokenId, ok := data[2].(*big.Int)
-			if !ok {
-				app.Service.Logger.Error("invalid tokenId", "tokenId", data[2])
-				return nil
-			}
+			// all topics are 32 bytes, but addresses are 20 bytes.
+			// it is padded as 0x000000000000000000000000 + address
+			toTopic := "0x" + hex.EncodeToString(log.Topics[2][12:])
 
-			return assignOwnership(ctx, app, to.Hex(), tokenId.Int64(), types.NewUUIDV5(log.TxHash[:]))
+			return assignOwnership(ctx, app, toTopic, log.Topics[3].Big().Int64(), types.NewUUIDV5(log.TxHash[:]), kwilBlock)
 		},
 	})
 
