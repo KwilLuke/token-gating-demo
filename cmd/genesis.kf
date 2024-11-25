@@ -13,7 +13,7 @@ procedure upsert_owner ($address text, $token_id int) public owner {
 }
 
 procedure check_owner ($address text) public view returns (isOwner bool) {
-    $isOwner bool;
+    $isOwner bool := false;
 
     for $row in SELECT 1 FROM owners WHERE address = LOWER($address) {
         $isOwner := true;
