@@ -5,11 +5,11 @@ table messages {
     message text notnull
 }
 
-foreign procedure check_user($address text) returns (isOwner bool)
+foreign procedure check_owner($address text) returns (isOwner bool)
 
 procedure is_owner() private view {
     // foreign call
-    $isOwner := check_user['x88565fd74313f7deded69a5557c5a46d62b82d40db9dd98f4a3d2e13', 'check_user'](@caller);
+    $isOwner := check_owner['x88565fd74313f7deded69a5557c5a46d62b82d40db9dd98f4a3d2e13', 'check_owner'](@caller);
 
     // throw error if not owner
     if !$isOwner {

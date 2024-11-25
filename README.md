@@ -55,7 +55,7 @@ rpc_url = "wss://mainnet.infura.io/ws/v3/your_api_key"
 6. Start the node.
 
 ```bash
-.build/kwild-erc721 node -r .build/demo-node
+.build/kwild-erc721 node -r .build/node_config
 ```
 
 Once started, the oracle will sync with the Ethereum network and listen for the `Transfer` event on the ERC721 contract. It will update the access control list based on the ownership of the token.
