@@ -13,8 +13,8 @@ import (
 )
 
 var (
-	contractAddress     = "0x25ed58c027921E14D86380eA2646E3a1B5C55A8b" // address of the ERC-721 contract
-	contractStartHeight = 18700000  
+	contractAddress     = "0x6f32d1b318877e19bC2d55FE0892F698BA4A4A06" // address of the ERC-721 contract
+	contractStartHeight = 7259828  
 	// stakingABI is the abi for the Credit event
 	transferEventSignature = "Transfer(address,address,uint256)"
 	transferEventTopic     = crypto.Keccak256Hash([]byte(transferEventSignature))
